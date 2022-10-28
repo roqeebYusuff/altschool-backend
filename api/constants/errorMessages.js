@@ -4,4 +4,5 @@ module.exports.errorMessages = {
   NOT_FOUND: "Resource not found",
   UNAUTHORIZED: "Unauthorized",
   UNPROCESSABLE_ENTITY: "Unprocessable entity",
+  PROVIDE_REQUIRED_FIELDS: "Provide Required fields",
 };
