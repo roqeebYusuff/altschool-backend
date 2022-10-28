@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const jsonwebtoken = require("jsonwebtoken");
 const { hashPassword } = require("../utils/passwordUtils");
 const CONFIG = require("../config/config");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const COLLECTION_NAME = "user";
 const Schema = mongoose.Schema;
@@ -33,6 +34,9 @@ let userSchema = Schema(
   { timestamps: true }
 );
 
+/* Validator  */
+userSchema.plugin(uniqueValidator);
+
 // Hash User Password Before inserting
 userSchema.pre("save", function (next) {
   const user = this;
@@ -57,4 +61,4 @@ function createSessionToken(_id) {
 }
 
 module.exports = mongoose.model(COLLECTION_NAME, userSchema);
-module.exports = createSessionToken;
+module.exports.createSessionToken = createSessionToken;
