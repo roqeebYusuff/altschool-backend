@@ -1,4 +1,4 @@
-module.exports.errorMessages = {
+module.exports.statusMessages = {
   BAD_REQUEST: "Provide all required parameters",
   INVALID_CREDENTIALS: "Invalid credentials",
   NOT_FOUND: "Resource not found",

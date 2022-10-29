@@ -1,9 +1,10 @@
-module.exports.errorCodes = {
+module.exports.statusCodes = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   METHOD_NOT_ALLOWED: 405,
   SERVER_ERROR: 500,
-  USER_CREATED: 201,
+  CREATED: 201,
+  SUCCESS: 200
 };
