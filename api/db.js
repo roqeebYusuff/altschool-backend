@@ -3,7 +3,7 @@ const CONFIG = require("./config/config");
 
 const connectDB = () => {
   return new Promise(function (resolve, reject) {
-    mongoose.connect(CONFIG.MONGODB_URL);
+    mongoose.connect(CONFIG.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
     let db = mongoose.connection;
     db.on("connected", function (ref) {
