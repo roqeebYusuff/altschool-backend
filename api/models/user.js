@@ -28,7 +28,7 @@ let userSchema = Schema(
     password: {
       type: String,
       required: true,
-      select: true,
+      select: false,
     },
   },
   { timestamps: true }

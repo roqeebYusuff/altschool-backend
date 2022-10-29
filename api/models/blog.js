@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
+const COLLECTION_NAME = "blog";
 const blogStatus = {
   draft: "draft",
   published: "published",
@@ -19,15 +21,18 @@ const blogSchema = new Schema(
     },
     author: {
       type: String,
-      required: false,
+      required: true,
     },
     state: {
       type: String,
+      enum: Object.values(blogStatus),
+      default: blogStatus.draft,
       required: true,
     },
     read_count: {
       type: Number,
       required: true,
+      default: 0
     },
     reading_time: {
       type: Number,
@@ -39,15 +44,14 @@ const blogSchema = new Schema(
     },
     body: {
       type: String,
-    },
-    status: {
-      type: String,
-      enum: Object.values(blogStatus),
-      default: blogStatus.draft,
       required: true,
     },
   },
   { timestamps: true }
 );
+
+
+/* Validator  */
+blogSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model(COLLECTION_NAME, blogSchema);
