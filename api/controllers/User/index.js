@@ -10,7 +10,6 @@ module.exports.signin = (req, res) => {
   if (!email || !password) {
     return res.status(statusCodes.BAD_REQUEST).json({
       success: false,
-      errorCode: statusCodes.BAD_REQUEST,
       message: statusMessages.PROVIDE_REQUIRED_FIELDS,
     });
   }
@@ -19,12 +18,11 @@ module.exports.signin = (req, res) => {
     .findOne({ email })
     .select("+password") //select password to compare
     .then((user) => {
-      if (!user || !checkPassword(user["password"], password)){   
+      if (!user || !checkPassword(user["password"], password)) {
         return res.status(statusCodes.BAD_REQUEST).json({
           succes: false,
-          errorCode: statusCodes.BAD_REQUEST,
           message: statusMessages.INVALID_CREDENTIALS,
-        })
+        });
       }
       // unselect password
       delete user.password;
@@ -35,9 +33,8 @@ module.exports.signin = (req, res) => {
       });
     })
     .catch((error) => {
-      return res.json({
+      return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        errorCode: statusCodes.SERVER_ERROR,
         message: error,
       });
     });
@@ -50,7 +47,6 @@ module.exports.signup = (req, res) => {
   if (!first_name || !last_name || !email || !username || !password) {
     return res.status(statusCodes.BAD_REQUEST).json({
       success: false,
-      errorCode: statusCodes.BAD_REQUEST,
       message: statusMessages.PROVIDE_REQUIRED_FIELDS,
     });
   }
@@ -67,7 +63,6 @@ module.exports.signup = (req, res) => {
     if (error) {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        statusCodes: statusCodes.SERVER_ERROR,
         message,
       });
     }
@@ -75,6 +70,7 @@ module.exports.signup = (req, res) => {
     return res.status(statusCodes.CREATED).json({
       success: true,
       user: success,
+      message: "Sign up Successful",
     });
   });
 };

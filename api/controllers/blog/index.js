@@ -12,14 +12,14 @@ module.exports.getOneBlog = (req, res) => {
   blogModel
     .findOne({ _id: id })
     .populate("author")
-    .then((blog) => {
+    .then(async (blog) => {
       blog.read_count = blog.read_count + 1; /* Increase read count by one */
+      // await blog.save()
       blog.save((err, done) => {
         //save
         if (err) {
           return res.status(statusCodes.SERVER_ERROR).json({
             success: true,
-            errorCode: statusCodes.SERVER_ERROR,
             message: err,
           });
         }
@@ -32,7 +32,6 @@ module.exports.getOneBlog = (req, res) => {
     .catch((err) => {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        errorCode: statusCodes.SERVER_ERROR,
         message: err,
       });
     });
@@ -66,7 +65,6 @@ module.exports.allBlogs = (req, res) => {
     .catch((err) => {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        errorCode: statusCodes.SERVER_ERROR,
         message: err,
       });
     });
@@ -102,7 +100,6 @@ module.exports.authorBlogs = (req, res) => {
         .catch((err) => {
           return res.status(statusCodes.SERVER_ERROR).json({
             success: false,
-            statusCode: statusCodes.SERVER_ERROR,
             message: err,
           });
         });
@@ -110,7 +107,6 @@ module.exports.authorBlogs = (req, res) => {
     .catch((err) => {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        statusCode: statusCodes.SERVER_ERROR,
         message: err,
       });
     });
@@ -122,7 +118,6 @@ module.exports.createBlog = (req, res) => {
   if (!title || !description || !tags || !body) {
     return res.status(statusCodes.BAD_REQUEST).json({
       success: false,
-      errorCode: statusCodes.BAD_REQUEST,
       message: statusMessages.PROVIDE_REQUIRED_FIELDS,
     });
   }
@@ -149,7 +144,6 @@ module.exports.createBlog = (req, res) => {
     if (error) {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        errorCode: statusCodes.SERVER_ERROR,
         error,
       });
     }
@@ -169,7 +163,6 @@ module.exports.updateBlog = (req, res) => {
   if (!state) {
     return res.status(statusCodes.BAD_REQUEST).json({
       success: false,
-      errorCode: statusCodes.BAD_REQUEST,
       message: statusMessages.PROVIDE_REQUIRED_FIELDS,
     });
   }
@@ -181,7 +174,6 @@ module.exports.updateBlog = (req, res) => {
       if (!blog) {
         return res.status(statusCodes.BAD_REQUEST).json({
           success: false,
-          errorCode: statusCodes.BAD_REQUEST,
           message: statusMessages.INVALID_REQUEST,
         });
       } else {
@@ -196,7 +188,6 @@ module.exports.updateBlog = (req, res) => {
                 if (err) {
                   return res.status(statusCodes.SERVER_ERROR).json({
                     success: false,
-                    errorCode: statusCodes.SERVER_ERROR,
                     message: err,
                   });
                 }
@@ -208,7 +199,6 @@ module.exports.updateBlog = (req, res) => {
             } else {
               return res.status(statusCodes.FORBIDDEN).json({
                 success: false,
-                statusCode: statusCodes.FORBIDDEN,
                 message: statusMessages.FORBIDDEN,
               });
             }
@@ -221,7 +211,6 @@ module.exports.updateBlog = (req, res) => {
     .catch((err) => {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        errorCode: statusCodes.SERVER_ERROR,
         message: err,
       });
     });
@@ -238,7 +227,6 @@ module.exports.deleteBlog = async (req, res) => {
       if (!blog) {
         return res.status(statusCodes.BAD_REQUEST).json({
           success: false,
-          errorCode: statusCodes.BAD_REQUEST,
           message: statusMessages.INVALID_REQUEST,
         });
       } else {
@@ -252,7 +240,6 @@ module.exports.deleteBlog = async (req, res) => {
                 if (err) {
                   return res.status(statusCodes.SERVER_ERROR).json({
                     success: false,
-                    errorCode: statusCodes.SERVER_ERROR,
                     message: err,
                   });
                 }
@@ -264,7 +251,6 @@ module.exports.deleteBlog = async (req, res) => {
             } else {
               return res.status(statusCodes.FORBIDDEN).json({
                 success: false,
-                status: statusCodes.FORBIDDEN,
                 message: statusMessages.FORBIDDEN,
               });
             }
@@ -281,7 +267,6 @@ module.exports.deleteBlog = async (req, res) => {
     .catch((err) => {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        errorCode: statusCodes.SERVER_ERROR,
         message: err,
       });
     });
