@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const config = require("../config/config");
+
 module.exports.readingTime = (words) => {
   let wordCount = words.split(" ").length; //count words
   //using 233 words per minute
@@ -10,4 +13,20 @@ module.exports.readingTime = (words) => {
   let result = Math.ceil(mins + secs); // Round to ceil
 
   return result;
+};
+
+module.exports.getLoggedInID = (token) => {
+  return new Promise(function (resolve, reject) {
+    token = token.split(" ")[1];
+    if (token) {
+      jwt.verify(token, config.SECRET_JWT, (err, decoded) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(decoded._id);
+      });
+    } else {
+      reject("error");
+    }
+  });
 };
