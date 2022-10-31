@@ -4,7 +4,7 @@ const { hashPassword } = require("../utils/passwordUtils");
 const CONFIG = require("../config/config");
 const uniqueValidator = require("mongoose-unique-validator");
 
-const COLLECTION_NAME = "user";
+const COLLECTION_NAME = "users";
 const Schema = mongoose.Schema;
 
 let userSchema = Schema(
