@@ -5,4 +5,6 @@ module.exports.statusMessages = {
   UNAUTHORIZED: "Unauthorized",
   UNPROCESSABLE_ENTITY: "Unprocessable entity",
   PROVIDE_REQUIRED_FIELDS: "Provide Required fields",
+  INVALID_REQUEST: "Invalid Request",
+  FORBIDDEN: "Action Forbidden",
 };
