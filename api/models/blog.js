@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
-const COLLECTION_NAME = "blog";
+const COLLECTION_NAME = "blogs";
 const blogStatus = {
   draft: "draft",
   published: "published",
@@ -20,8 +21,8 @@ const blogSchema = new Schema(
       required: false,
     },
     author: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "users",
     },
     state: {
       type: String,
@@ -32,7 +33,7 @@ const blogSchema = new Schema(
     read_count: {
       type: Number,
       required: true,
-      default: 0
+      default: 0,
     },
     reading_time: {
       type: Number,
@@ -50,8 +51,9 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-
 /* Validator  */
 blogSchema.plugin(uniqueValidator);
+//paginate
+blogSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model(COLLECTION_NAME, blogSchema);
