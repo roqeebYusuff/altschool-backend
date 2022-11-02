@@ -1,7 +1,7 @@
-const config = require("./api/config/config");
+const config = require("./src/config/config");
 const app = require("./index");
-const initializeDb = require("./api/db");
-const { seeders } = require("./api/seeder");
+const initializeDb = require("./src/db");
+const { seeders } = require("./src/api/v1/seeder");
 
 /* Connect to db */
 initializeDb().then(() => {

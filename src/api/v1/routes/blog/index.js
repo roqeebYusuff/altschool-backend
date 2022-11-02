@@ -20,7 +20,7 @@ router.delete("/delete/:id", authorize, deleteBlog); //Delete blog
 
 router.get("/", function (req, res) {
   res.json({
-    route: "Blog ROutes",
+    route: "Blog Routes",
   });
 });
 

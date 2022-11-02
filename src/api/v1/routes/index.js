@@ -8,7 +8,7 @@ router.use("/user", userRoutes);
 router.use("/blog", blogRoutes);
 router.get("/", (req, res) => {
   res.json({
-    route: "Routes",
+    route: "v1 Routes",
     timestamp: Date.now(),
   });
 });

@@ -1,5 +1,5 @@
-const config = require("../config/config");
-const { statusCodes } = require("../constants/statusCodes");
+const config = require("../../../config/config");
+const { statusCodes } = require("../../../constants/statusCodes");
 const jwt = require("jsonwebtoken");
 
 module.exports.authorize = (req, res, next) => {

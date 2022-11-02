@@ -1,7 +1,7 @@
-const { statusCodes } = require("../../constants/statusCodes");
-const { statusMessages } = require("../../constants/statusMessages");
+const { statusCodes } = require("../../../../constants/statusCodes");
+const { statusMessages } = require("../../../../constants/statusMessages");
 const userModel = require("../../models/user");
-const { checkPassword } = require("../../utils/passwordUtils");
+const { checkPassword } = require("../../../../utils/passwordUtils");
 
 module.exports.signin = (req, res) => {
   let { email, password } = req.body;
@@ -63,7 +63,7 @@ module.exports.signup = (req, res) => {
     if (error) {
       return res.status(statusCodes.SERVER_ERROR).json({
         success: false,
-        message,
+        message: error,
       });
     }
 

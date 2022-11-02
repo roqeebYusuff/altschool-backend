@@ -3,7 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
-const routes = require("./api/routes");
+const routes = require("./src/api/v1/routes");
 
 const app = express();
 
@@ -11,7 +11,14 @@ app.use(cors());
 app.use(morgan(":method :url :status :user-agent - :response-time ms"));
 app.use(bodyParser.json());
 
-app.use("/", routes);
+app.use("/v1", routes);
+
+app.get("/", (req, res) => {
+  return res.status(200).json({
+    success: true,
+    route: "Blog API",
+  });
+});
 
 app.use("*", (req, res) => {
   return res.status(404).json({

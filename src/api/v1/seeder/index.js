@@ -1,7 +1,7 @@
 const { faker } = require("@faker-js/faker/locale/en_NG");
 const User = require("../models/user");
 const Blog = require("../models/blog");
-const { readingTime } = require("../utils/func");
+const { readingTime } = require("../../../utils/func");
 
 module.exports.seeders = async () => {
   await userSeeder();

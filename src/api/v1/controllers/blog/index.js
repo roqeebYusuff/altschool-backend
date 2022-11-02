@@ -1,9 +1,9 @@
-const { statusCodes } = require("../../constants/statusCodes");
-const { statusMessages } = require("../../constants/statusMessages");
+const { statusCodes } = require("../../../../constants/statusCodes");
+const { statusMessages } = require("../../../../constants/statusMessages");
 const blogModel = require("../../models/blog");
-const { readingTime, getLoggedInID } = require("../../utils/func");
+const { readingTime, getLoggedInID } = require("../../../../utils/func");
 const jwt = require("jsonwebtoken");
-const config = require("../../config/config");
+const config = require("../../../../config/config");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 // only published blogs

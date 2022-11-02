@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const jsonwebtoken = require("jsonwebtoken");
-const { hashPassword } = require("../utils/passwordUtils");
-const CONFIG = require("../config/config");
+const { hashPassword } = require("../../../utils/passwordUtils");
+const CONFIG = require("../../../config/config");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const COLLECTION_NAME = "users";
