@@ -1,6 +1,6 @@
 const request = require("supertest");
-const { connect } = require("./database");
-const UserModel = require("../../");
+const { connect } = require("./db");
+const UserModel = require("../src/api/v1/models/user");
 const app = require("../index");
 
 describe("Authentication", () => {
@@ -20,7 +20,7 @@ describe("Authentication", () => {
 
   it("should signup a user", async () => {
     const response = await request(app)
-      .post("/signup")
+      .post("/user/signup")
       .set("content-type", "application/json")
       .send({
         first_name: "Roqeeb",
@@ -31,12 +31,8 @@ describe("Authentication", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty("message");
+    expect(response.body).toHaveProperty("success");
     expect(response.body).toHaveProperty("user");
-    // expect(response.body.user).toHaveProperty("username", "tobi");
-    // expect(response.body.user).toHaveProperty("firstname", "tobie");
-    // expect(response.body.user).toHaveProperty("lastname", "Augustina");
-    // expect(response.body.user).toHaveProperty("email", "tobi@mail.com");
   });
 
   it("should login a user", async () => {
@@ -48,7 +44,7 @@ describe("Authentication", () => {
 
     // login user
     const response = await request(app)
-      .post("/login")
+      .post("/user/signin")
       .set("content-type", "application/json")
       .send({
         username: "roqeebyusuff@gmail.com",
@@ -56,6 +52,8 @@ describe("Authentication", () => {
       });
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("success");
+    expect(response.body).toHaveProperty("user");
     expect(response.body).toHaveProperty("token");
   });
 });

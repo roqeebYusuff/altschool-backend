@@ -1,88 +1,154 @@
-const request = require('supertest')
-const { connect } = require('./database')
-const app = require('../index');
-const OrderModel = require('../models/orderModel');
-const UserModel = require('../models/userModel')
+const request = require("supertest");
+const { connect } = require("./database");
+const app = require("../index");
+const BlogModel = require("../src/api/v1/models/blog");
+const UserModel = require("../src/api/v1/models/user");
 
+describe("Blog Route", () => {
+  let conn;
+  let token;
 
-describe('Order Route', () => {
-    let conn;
-    let token;
+  beforeAll(async () => {
+    conn = await connect();
 
-    beforeAll(async () => {
-        conn = await connect()
+    await UserModel.create({
+      first_name: "Roqeeb",
+      last_name: "Yusuff",
+      username: "roqeeb",
+      email: "roqeebyusuff001@gmail.com",
+      password: "password",
+    });
 
-        await UserModel.create({ username: 'tobi', password: '123456'});
+    const loginResponse = await request(app)
+      .post("/login")
+      .set("content-type", "application/json")
+      .send({
+        email: "roqeebyusuff001@gmail.com",
+        password: "password",
+      });
 
-        const loginResponse = await request(app)
-        .post('/login')
-        .set('content-type', 'application/json')
-        .send({ 
-            username: 'tobi', 
-            password: '123456'
-        });
+    token = loginResponse.body.token;
+  });
 
-        token = loginResponse.body.token;
-    })
+  afterEach(async () => {
+    await conn.cleanup();
+  });
 
-    afterEach(async () => {
-        await conn.cleanup()
-    })
+  afterAll(async () => {
+    await conn.disconnect();
+  });
 
-    afterAll(async () => {
-        await conn.disconnect()
-    })
+  it("should return all blogs", async () => {
+    // create blog in database
+    await BlogModel.create({
+      title: "A title",
+      description: "The description",
+      tags: [],
+      body: "The blog body",
+    });
 
-    it('should return orders', async () => {
-        // create order in our db
-        await OrderModel.create({
-            state: 1,
-            total_price: 900,
-            created_at: moment().toDate(),
-            items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-        })
+    await BlogModel.create({
+      title: "Another title",
+      description: "The description",
+      tags: [],
+      body: "The blog body",
+    });
 
-        await OrderModel.create({
-            state: 1,
-            total_price: 900,
-            created_at: moment().toDate(),
-            items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-        })
+    const response = await request(app)
+      .get("/blog/list")
+      .set("content-type", "application/json");
 
-        const response = await request(app)
-        .get('/orders')
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${token}`)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("blogs");
+    expect(response.body).toHaveProperty("success", true);
+  });
 
-        expect(response.status).toBe(200)
-        expect(response.body).toHaveProperty('orders')
-        expect(response.body).toHaveProperty('status', true)
-    })
+  it("should create a blog", async () => {
+    const response = await request(app)
+      .get(`/blog/create`)
+      .set("content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`);
 
-    it('should return orders with state 2', async () => {
-        // create order in our db
-        await OrderModel.create({
-            state: 1,
-            total_price: 900,
-            created_at: moment().toDate(),
-            items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-        })
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("blog");
+    expect(response.body).toHaveProperty("success", true);
+  });
 
-        await OrderModel.create({
-            state: 2,
-            total_price: 900,
-            created_at: moment().toDate(),
-            items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-        })
+  it("should return one blog", async () => {
+    // create blog in database
+    const blog = await BlogModel.create({
+      title: "A title",
+      description: "The description",
+      tags: [],
+      body: "The blog body",
+    });
 
-        const response = await request(app)
-        .get('/orders?state=2')
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${token}`)
+    const response = await request(app)
+      .get(`/blog/listOne/${blog._id}`)
+      .set("content-type", "application/json");
 
-        expect(response.status).toBe(200)
-        expect(response.body).toHaveProperty('orders')
-        expect(response.body).toHaveProperty('status', true)
-        expect(response.body.orders.every(order => order.state === 2)).toBe(true)
-    })
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("blog");
+    expect(response.body).toHaveProperty("success", true);
+  });
+
+  it("should return author blog", async () => {
+    // create blog in database
+    await BlogModel.create({
+      title: "A title",
+      description: "The description",
+      tags: [],
+      body: "The blog body",
+    });
+
+    const response = await request(app)
+      .get("/blog/myBlogs")
+      .set("content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("blogs");
+    expect(response.body).toHaveProperty("success", true);
+  });
+
+  it("should Edit one blog", async () => {
+    // create blog in database
+    const blog = await BlogModel.create({
+      title: "A title",
+      description: "The description",
+      tags: [],
+      body: "The blog body",
+    });
+
+    const response = await request(app)
+      .get(`/blog/update/${blog._id}`)
+      .set("content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        state: "published",
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("blog");
+    expect(response.body).toHaveProperty("success", true);
+  });
+
+  it("should delete one blog", async () => {
+    // create blog in database
+    const blog = await BlogModel.create({
+      title: "A title",
+      description: "The description",
+      tags: [],
+      body: "The blog body",
+    });
+
+    const response = await request(app)
+      .get(`/blog/delete/${blog._id}`)
+      .set("content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("blog");
+    expect(response.body).toHaveProperty("success", true);
+  });
 });

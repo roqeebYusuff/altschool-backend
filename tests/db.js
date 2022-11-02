@@ -13,7 +13,7 @@ class Connection {
     this.mongoServer = await MongoMemoryServer.create();
     const mongoUri = this.mongoServer.getUri();
 
-    this.connection = await mongoose.connect(mongoUri, {
+    this.connection = mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
