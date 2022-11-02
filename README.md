@@ -1,32 +1,31 @@
 # Blog API
 This is a blog API
 
-## Table of Content
+## :telescope: Table of Content <a href="#table-of-content" id="table-of-content"/>
 
 - [Blog API](#blog-api)
-  - [Table of Content](#table-of-content)
-  - [Requirements](#requirements)
-  - [URLs](#urls)
-    - [Live URL](#live-url)
-    - [Base URL](#base-url)
-  - [:sparkles: Getting Started](#sparkles-getting-started)
-  - [Models](#models)
-    - [User](#user)
-    - [Blog](#blog)
-  - [API Routes](#api-routes)
-  - [APIs](#apis)
-    - [Signup User](#signup-user)
-    - [Signin User](#signin-user)
-    - [Get a Blog (Published Only)](#get-a-blog-published-only)
-    - [Get All Blogs(Published Only)](#get-all-blogspublished-only)
-    - [Get All Author Blogs](#get-all-author-blogs)
-    - [Create Blog](#create-blog)
-    - [Update/Edit Blog](#updateedit-blog)
-    - [Delete Blog](#delete-blog)
-  - [Testing](#testing)
-  - [Contributors](#contributors)
+  - [:telescope: Table of Content](#table-of-content)
+  - [:gear: Requirements](#requirements)
+  - [:rocket: Deployment](#deployment)
+  - [:earth_africa: Base URL](#base-url)
+  - [:sparkles: Getting Started](#getting-started)
+  - [:lollipop: Models](#models)
+    - [:sunglasses: User](#user)
+    - [:book: Blog](#blog)
+  - [:flags: API Routes](#api-routes)
+  - [:zap: APIs ](#apis)
+    - [:tada: Signup User](#signup-user)
+    - [:crystal_ball: Signin User ](#signin-user)
+    - [:ferris_wheel: Get a Blog (Published Only)](#get-a-blog-published-only)
+    - [:sparkler: Get All Blogs(Published Only)](#get-all-blogspublished-only)
+    - [:necktie: Get All Author Blogs](#get-all-author-blogs)
+    - [:art: Create Blog](#create-blog)
+    - [:pencil: Update/Edit Blog](#updateedit-blog)
+    - [:wastebasket: Delete Blog](#delete-blog)
+  - [:test_tube: Testing](#testing)
+  - [:construction_worker: Contributors ](#contributors)
 
-## Requirements
+## :gear: Requirements <a href="#requirements" id="requirements"/>
 
 1. User should be able to sign up and sign in
 2. Implement basic auth
@@ -36,17 +35,14 @@ This is a blog API
 6. Blog Owner should be able to update blog state
 7. Blog owner should be able to delete blog
 8. Test application
-   
 
-## URLs
-
-### Live URL
+## :rocket: Deployment <a href="#deployment" id="deployment"/>
 The API is hosted live [here](https://google.com)
 
-### Base URL
+## :earth_africa: Base URL <a href="#base-url" id="base-url"/>
 [https://google.com](https://google.com)
 
-## :sparkles: Getting Started
+## :sparkles: Getting Started <a href="#getting-started" id="getting-started"/>
 
 1. Clone Repository
    ```bash
@@ -78,9 +74,9 @@ The API is hosted live [here](https://google.com)
 
    :sparkles: You are all set
 
-## Models
+## :lollipop: Models <a href="#models" id="models"/>
 
-### User
+### :sunglasses: User <a href="#user" id="user"/>
 
 | field      | Data Type | Constraint             |
 | ---------- | --------- | ---------------------- |
@@ -90,7 +86,7 @@ The API is hosted live [here](https://google.com)
 | username   | string    | required, unique, trim |
 | password   | string    | required               |
 
-### Blog
+### :book: Blog <a href="#blog" id="blog"/>
 
 | field        | Data Type | Constraint                                             |
 | ------------ | --------- | ------------------------------------------------------ |
@@ -103,7 +99,7 @@ The API is hosted live [here](https://google.com)
 | tags         | array     | required                                               |
 | body         | string    | required                                               |
 
-## API Routes
+## :flags: API Routes <a href="#api-routes" id="api-routes"/>
 
 The route prefix is `/api` by default.
 
@@ -119,9 +115,9 @@ The route prefix is `/api` by default.
 | **/blog/update/:id** | Blog Update route Endpoint                                         |
 | **/blog/delete/:id** | Blog Delete route Endpoint                                         |
 
-## APIs
+## :zap: APIs <a href="#apis" id="apis"/>
 
-### Signup User
+### :tada: Signup User <a href="#signup-user" id="signup-user"/>
 
 - Route: /user/signup
 - Method: POST
@@ -150,7 +146,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Signin User
+### :crystal_ball: Signin User <a href="#signin-user" id="signin-user"/>
 - Route: /user/signin
 - Method: POST
 - Body:
@@ -170,7 +166,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Get a Blog (Published Only)
+### :ferris_wheel: Get a Blog (Published Only) <a href="#get-a-blogpublished-only" id="get-a-blogpublished-only"/>
 - Route: /blog/listOne/:id
 - Method: GET
 - Response
@@ -182,7 +178,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Get All Blogs(Published Only)
+### :sparkler: Get All Blogs(Published Only) <a href="#get-all-blogspublished-only" id="get-all-blogspublished-only"/>
 - Route: /blog/list
 - Method: GET
 - Query Params
@@ -208,7 +204,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Get All Author Blogs
+### :necktie: Get All Author Blogs <a href="#get-all-author-blogs" id="get-all-author-blogs"/>
 - Route: /blog/myBlogs
 - Method: GET
 - Header
@@ -230,7 +226,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Create Blog
+### :art: Create Blog <a href="#create-blog" id="create-blog"/>
 - Route: /blog/create
 - Method: POST
 - Header
@@ -263,7 +259,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Update/Edit Blog
+### :pencil: Update/Edit Blog <a href="#updateedit-blog" id="updateedit-blog"/>
 - Route: /blog/edit/:id
 - Method: PATCH
 - Header
@@ -287,7 +283,7 @@ The route prefix is `/api` by default.
   }
   ```
 
-### Delete Blog
+### :wastebasket: Delete Blog <a href="#delete-blog" id="delete-blog"/>
 - Route: /blog/delete/:id
 - Method: DELETE
 - Header
@@ -301,8 +297,8 @@ The route prefix is `/api` by default.
   ```
 
 
-## Testing
+## :test_tube: Testing <a href="#testing" id="testing"/>
 
-## Contributors
+## :construction_worker: Contributors <a href="#contributors" id="contributors"/>
 
 - Roqeeb Yusuff
