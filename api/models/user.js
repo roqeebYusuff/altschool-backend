@@ -37,11 +37,23 @@ let userSchema = Schema(
 /* Validator  */
 userSchema.plugin(uniqueValidator);
 
-// Hash User Password Before inserting
+// Hash User Password Before saving
 userSchema.pre("save", function (next) {
   const user = this;
   if (user.isModified("password")) {
     user["password"] = hashPassword(user["password"]);
+  }
+  next();
+});
+
+// Hash users password before insertMany
+userSchema.pre("insertMany", async (next, docs) => {
+  if (Array.isArray(docs) && docs.length) {
+    const hashedPassword = docs.map(async (user) => {
+      user.password = hashPassword(user.password);
+    });
+
+    docs = hashedPassword;
   }
   next();
 });
