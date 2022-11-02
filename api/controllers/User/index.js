@@ -70,7 +70,6 @@ module.exports.signup = (req, res) => {
     return res.status(statusCodes.CREATED).json({
       success: true,
       user: success,
-      message: "Sign up Successful",
     });
   });
 };

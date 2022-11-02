@@ -6,43 +6,47 @@ const jwt = require("jsonwebtoken");
 const config = require("../../config/config");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-module.exports.getOneBlog = (req, res) => {
+// only published blogs
+module.exports.getOneBlog = async (req, res) => {
   let id = req.params.id;
 
-  blogModel
-    .findOne({ _id: id })
-    .populate("author")
-    .then(async (blog) => {
-      blog.read_count = blog.read_count + 1; /* Increase read count by one */
-      // await blog.save()
-      blog.save((err, done) => {
-        //save
-        if (err) {
-          return res.status(statusCodes.SERVER_ERROR).json({
-            success: true,
-            message: err,
-          });
-        }
-        return res.status(statusCodes.SUCCESS).json({
-          success: true,
-          blog,
-        });
-      });
-    })
-    .catch((err) => {
-      return res.status(statusCodes.SERVER_ERROR).json({
-        success: false,
-        message: err,
-      });
+  const blog = await blogModel
+    .findOne({ _id: id, state: "published" })
+    .populate("author");
+
+  if (!blog) {
+    return res.status(statusCodes.NOT_FOUND).json({
+      success: false,
+      blog: null,
     });
+  }
+
+  /* Increase read count by one */
+  blog.read_count = blog.read_count + 1;
+  await blog.save(); //save
+
+  return res.status(statusCodes.SUCCESS).json({
+    success: true,
+    blog,
+  });
 };
 
+// all published blogs
 module.exports.allBlogs = (req, res) => {
-  let { state, author, title, tags, page } = req.query;
+  let { author, title, tags, page, read_count, reading_time, timestamp } =
+    req.query;
 
   var query = {};
+  author ? (query.author = author) : "";
+  title ? (query.title = title) : "";
+  // tags ? (query.tags = tags) : "";
   var options = {
-    sort: { read_count: -1, reading_time: -1, created_at: -1 },
+    sort: {
+      read_count: read_count == "asc" ? 1 : read_count == "desc" ? -1 : -1,
+      reading_time:
+        reading_time == "asc" ? 1 : reading_time == "desc" ? -1 : -1,
+      createdAt: timestamp == "asc" ? 1 : timestamp == "desc" ? -1 : -1, // Default is 'desc'
+    },
     // populate: "author",
     page: page ? page : 1 /* if page number is not provided show page 1 */,
     limit: 20,
@@ -56,6 +60,7 @@ module.exports.allBlogs = (req, res) => {
         success: true,
         blogs: blog.docs,
         totalBlogs: blog.totalDocs,
+        totalPages: blog.totalPages,
         page: blog.page,
         perPage: blog.limit,
         hasPrevPage: blog.hasPrevPage,
@@ -77,9 +82,8 @@ module.exports.authorBlogs = (req, res) => {
       /* Find author blogs */
       var query = { author: ObjectId(response) };
       /* Filter by state when state query is provided */
-      if (state) {
-        query.state = state;
-      }
+      state ? (query.state = state) : (query.state = "");
+
       var options = {
         // page: 20,
         limit: 20,
@@ -91,6 +95,7 @@ module.exports.authorBlogs = (req, res) => {
             success: true,
             blogs: blog.docs,
             totalBlogs: blog.totalDocs,
+            totalPages: blog.totalPages,
             page: blog.page,
             perPage: blog.limit,
             hasPrevPage: blog.hasPrevPage,
@@ -158,9 +163,9 @@ module.exports.createBlog = (req, res) => {
 /* owner of blog only update blog state */
 module.exports.updateBlog = (req, res) => {
   let { id } = req.params;
-  let { state } = req.body; // update blog state
+  let { state, title, description, body, tags } = req.body; // update blog state
 
-  if (!state) {
+  if (!state && !title && !description && !body && !tags) {
     return res.status(statusCodes.BAD_REQUEST).json({
       success: false,
       message: statusMessages.PROVIDE_REQUIRED_FIELDS,
@@ -172,9 +177,9 @@ module.exports.updateBlog = (req, res) => {
     .findById(id)
     .then((blog) => {
       if (!blog) {
-        return res.status(statusCodes.BAD_REQUEST).json({
+        return res.status(statusCodes.NOT_FOUND).json({
           success: false,
-          message: statusMessages.INVALID_REQUEST,
+          blog: null,
         });
       } else {
         /* CHeck if logged in user owns blog */
@@ -182,8 +187,12 @@ module.exports.updateBlog = (req, res) => {
           .then((response) => {
             /* Compare two mongoose id */
             if (String(response) === String(blog.author)) {
-              /* Update BLog */
-              blog.state = state;
+              /* Update BLog if fields are provided */
+              blog.state = state ? state : blog.state;
+              blog.title = title ? title : blog.title;
+              blog.description = description ? description : blog.description;
+              blog.body = body ? body : blog.body;
+              blog.tags = tags && tags.length ? tags : blog.tags;
               blog.save((err, updatedBlog) => {
                 if (err) {
                   return res.status(statusCodes.SERVER_ERROR).json({
@@ -204,7 +213,10 @@ module.exports.updateBlog = (req, res) => {
             }
           })
           .catch((err) => {
-            res.json({ err });
+            return res.status(statusCodes.SERVER_ERROR).json({
+              success: false,
+              message: err,
+            });
           });
       }
     })
