@@ -6,8 +6,8 @@
   "author": "Roqeeb Yusuff",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "start": "nodemon app.js",
-    "dev": "node app.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
