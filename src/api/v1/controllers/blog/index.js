@@ -36,9 +36,7 @@ module.exports.allBlogs = (req, res) => {
   let { author, title, tags, page, read_count, reading_time, timestamp } =
     req.query;
 
-  var query = {
-    // tags: { $in: tags },
-  };
+  var query = {};
   author ? (query.author = author) : "";
   title ? (query.title = title) : "";
   tags ? (query.tags = { $in: tags }) : "";
@@ -49,7 +47,6 @@ module.exports.allBlogs = (req, res) => {
         reading_time == "asc" ? 1 : reading_time == "desc" ? -1 : -1,
       createdAt: timestamp == "asc" ? 1 : timestamp == "desc" ? -1 : -1, // Default is 'desc'
     },
-    // populate: "author",
     page: page ? page : 1 /* if page number is not provided show page 1 */,
     limit: 20,
   };
