@@ -36,10 +36,12 @@ module.exports.allBlogs = (req, res) => {
   let { author, title, tags, page, read_count, reading_time, timestamp } =
     req.query;
 
-  var query = {};
+  var query = {
+    // tags: { $in: tags },
+  };
   author ? (query.author = author) : "";
   title ? (query.title = title) : "";
-  // tags ? (query.tags = tags) : "";
+  tags ? (query.tags = { $in: tags }) : "";
   var options = {
     sort: {
       read_count: read_count == "asc" ? 1 : read_count == "desc" ? -1 : -1,
