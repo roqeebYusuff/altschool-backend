@@ -40,7 +40,7 @@ This is a blog API
 The API is hosted live [here](https://alstschool-blog-api.herokuapp.com/)
 
 ## :earth_africa: Base URL <a href="#base-url" id="base-url"/>
-[https://google.com](https://alstschool-blog-api.herokuapp.com/v1)
+[Base URL](https://alstschool-blog-api.herokuapp.com/v1)
 
 ## :sparkles: Getting Started <a href="#getting-started" id="getting-started"/>
 
