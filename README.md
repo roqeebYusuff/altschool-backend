@@ -101,11 +101,10 @@ The API is hosted live [here](https://alstschool-blog-api.herokuapp.com/)
 
 ## :flags: API Routes <a href="#api-routes" id="api-routes"/>
 
-<!-- The route prefix is `/api` by default. -->
+The route prefix is `/v1` by default.
 
 | Route                | Description                                                        |
 | -------------------- | ------------------------------------------------------------------ |
-| **/api**             | Shows us the name, description and the version of the package.json |
 | **/user**            | User Endpoint                                                      |
 | **/user/signin**     | User Login route Endpoint                                          |
 | **/user/signup**     | User Signup route Endpoint                                         |
