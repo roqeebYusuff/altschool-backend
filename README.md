@@ -37,10 +37,10 @@ This is a blog API
 8. Test application
 
 ## :rocket: Deployment <a href="#deployment" id="deployment"/>
-The API is hosted live [here](https://google.com)
+The API is hosted live [here](https://alstschool-blog-api.herokuapp.com/)
 
 ## :earth_africa: Base URL <a href="#base-url" id="base-url"/>
-[https://google.com](https://google.com)
+[https://google.com](https://alstschool-blog-api.herokuapp.com/v1)
 
 ## :sparkles: Getting Started <a href="#getting-started" id="getting-started"/>
 
@@ -101,7 +101,7 @@ The API is hosted live [here](https://google.com)
 
 ## :flags: API Routes <a href="#api-routes" id="api-routes"/>
 
-The route prefix is `/api` by default.
+<!-- The route prefix is `/api` by default. -->
 
 | Route                | Description                                                        |
 | -------------------- | ------------------------------------------------------------------ |
@@ -210,7 +210,13 @@ The route prefix is `/api` by default.
 - Header
   - Authorization: Bearer {token}
 - Query Params
-  - state (options: draft | published)
+  - author
+  - title
+  - tags (default[])
+  - page (default: 1)
+  - read_count (options: asc | desc, default:desc)
+  - reading_time (options: asc | desc, default:desc)
+  - timestamp (options: asc | desc, default:desc)
 - Response
   Success
   ```
@@ -298,6 +304,13 @@ The route prefix is `/api` by default.
 
 
 ## :test_tube: Testing <a href="#testing" id="testing"/>
+ ```bash
+  yarn test
+```
+or
+```bash
+npm test
+```
 
 ## :construction_worker: Contributors <a href="#contributors" id="contributors"/>
 
