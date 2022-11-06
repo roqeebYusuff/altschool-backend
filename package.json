@@ -4,6 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "author": "Roqeeb Yusuff",
+  "engines": {
+    "node": "16.16.0",
+    "yarn": "1.22.15"
+  },
   "scripts": {
     "test": "jest --detectOpenHandles",
     "dev": "nodemon app.js",

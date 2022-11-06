@@ -79,34 +79,41 @@ module.exports.authorBlogs = (req, res) => {
   getLoggedInID(req.headers.authorization)
     .then((response) => {
       /* Find author blogs */
-      var query = { author: ObjectId(response) };
-      /* Filter by state when state query is provided */
-      state ? (query.state = state) : (query.state = "");
+      if (response.success) {
+        var query = { author: ObjectId(response) };
+        /* Filter by state when state query is provided */
+        state ? (query.state = state) : (query.state = "");
 
-      var options = {
-        // page: 20,
-        limit: 20,
-      };
-      blogModel
-        .paginate(query, options)
-        .then((blog) => {
-          return res.status(statusCodes.SUCCESS).json({
-            success: true,
-            blogs: blog.docs,
-            totalBlogs: blog.totalDocs,
-            totalPages: blog.totalPages,
-            page: blog.page,
-            perPage: blog.limit,
-            hasPrevPage: blog.hasPrevPage,
-            hasNextPage: blog.hasNextPage,
+        var options = {
+          // page: 20,
+          limit: 20,
+        };
+        blogModel
+          .paginate(query, options)
+          .then((blog) => {
+            return res.status(statusCodes.SUCCESS).json({
+              success: true,
+              blogs: blog.docs,
+              totalBlogs: blog.totalDocs,
+              totalPages: blog.totalPages,
+              page: blog.page,
+              perPage: blog.limit,
+              hasPrevPage: blog.hasPrevPage,
+              hasNextPage: blog.hasNextPage,
+            });
+          })
+          .catch((err) => {
+            return res.status(statusCodes.SERVER_ERROR).json({
+              success: false,
+              message: err,
+            });
           });
-        })
-        .catch((err) => {
-          return res.status(statusCodes.SERVER_ERROR).json({
-            success: false,
-            message: err,
-          });
+      } else {
+        return res.status(statusCodes.FORBIDDEN).json({
+          success: false,
+          message: statusMessages.FORBIDDEN,
         });
+      }
     })
     .catch((err) => {
       return res.status(statusCodes.SERVER_ERROR).json({
@@ -185,7 +192,7 @@ module.exports.updateBlog = (req, res) => {
         getLoggedInID(req.headers.authorization)
           .then((response) => {
             /* Compare two mongoose id */
-            if (String(response) === String(blog.author)) {
+            if (response.success && String(response) === String(blog.author)) {
               /* Update BLog if fields are provided */
               blog.state = state ? state : blog.state;
               blog.title = title ? title : blog.title;
@@ -245,7 +252,7 @@ module.exports.deleteBlog = async (req, res) => {
         getLoggedInID(req.headers.authorization)
           .then((response) => {
             /* Compare two mongoose id */
-            if (String(response) === String(blog.author)) {
+            if (response.success && String(response) === String(blog.author)) {
               /* Update BLog */
               blog.delete((err, deletedBlog) => {
                 if (err) {

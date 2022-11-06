@@ -21,12 +21,12 @@ module.exports.getLoggedInID = (token) => {
     if (token) {
       jwt.verify(token, config.SECRET_JWT, (err, decoded) => {
         if (err) {
-          reject(err);
+          reject({ success: false, message: err });
         }
-        resolve(decoded._id);
+        resolve({ success: true, decoded: decoded._id });
       });
     } else {
-      reject("error");
+      reject({ success: false, message: "error" });
     }
   });
 };
