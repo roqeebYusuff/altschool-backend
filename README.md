@@ -103,16 +103,18 @@ The API is hosted live [here](https://alstschool-blog-api.herokuapp.com/)
 
 The route prefix is `/v1` by default.
 
-| Route                | Description                                                        |
-| -------------------- | ------------------------------------------------------------------ |
-| **/user**            | User Endpoint                                                      |
-| **/user/signin**     | User Login route Endpoint                                          |
-| **/user/signup**     | User Signup route Endpoint                                         |
-| **/blog**            | Blog Endpoint                                                      |
-| **/blog/list**       | Shows all the blog                                                 |
-| **/blog/create**     | Blog Create route Endpoint                                         |
-| **/blog/update/:id** | Blog Update route Endpoint                                         |
-| **/blog/delete/:id** | Blog Delete route Endpoint                                         |
+| Route                 | Description                |
+| --------------------- | -------------------------- |
+| **/user**             | User Endpoint              |
+| **/user/signin**      | User Login route Endpoint  |
+| **/user/signup**      | User Signup route Endpoint |
+| **/blog**             | Blog Endpoint              |
+| **/blog/list**        | Shows all the blog         |
+| **/blog/listOne/:id** | Shows a blog               |
+| **/blog/myBlogs**     | Shows Signed User Blogs    |
+| **/blog/create**      | Blog Create route Endpoint |
+| **/blog/edit/:id**    | Blog Update route Endpoint |
+| **/blog/delete/:id**  | Blog Delete route Endpoint |
 
 ## :zap: APIs <a href="#apis" id="apis"/>
 
